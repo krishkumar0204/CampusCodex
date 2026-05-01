@@ -5,7 +5,6 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 const Contact = () => {
   const formRef = useRef(null);
-  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -13,7 +12,6 @@ const Contact = () => {
 
     try {
       setLoading(true);
-      setStatus("");
       await emailjs.sendForm(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
@@ -21,11 +19,10 @@ const Contact = () => {
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
       );
       toast.success("Message sent successfully");
-      setStatus("success");
+
       formRef.current.reset();
     } catch (err) {
       console.error(err);
-      setStatus("error");
     } finally {
       setLoading(false);
     }
@@ -45,16 +42,14 @@ const Contact = () => {
                 Share feedback, topics, or project ideas.
               </h1>
               <p className="mt-5 text-base leading-7 text-slate-600">
-                CampusCodex is shaped around student needs. Use this page as
-                the place for suggestions, missing notes, issue reports, and
-                ideas that can make the platform more useful.
+                CampusCodex is shaped around student needs. Use this page as the
+                place for suggestions, missing notes, issue reports, and ideas
+                that can make the platform more useful.
               </p>
 
               <div className="mt-8 space-y-4 text-sm text-slate-700">
                 <p>
-                  <span className="font-semibold text-slate-900">
-                    Support:
-                  </span>{" "}
+                  <span className="font-semibold text-slate-900">Support:</span>{" "}
                   krishkumar6984@gmail.com
                 </p>
                 <p>
@@ -102,12 +97,6 @@ const Contact = () => {
               >
                 {loading ? "Sending..." : "Send Message"}
               </button>
-
-              {status === "success" && (
-                <p className="mt-3 text-sm font-medium text-green-600">
-                  Message sent! We'll get back to you soon
-                </p>
-              )}
 
               {status === "error" && (
                 <p className="mt-3 text-sm font-medium text-red-500">
