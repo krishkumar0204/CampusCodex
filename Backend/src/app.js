@@ -27,6 +27,9 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api", notes);
+app.get("/", (req, res) => {
+  res.send("Campus Codex Backend is running 🚀");
+});
 
 app.use((err, req, res, next) => {
   console.error("Error :", err);
