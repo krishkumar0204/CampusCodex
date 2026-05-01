@@ -1,33 +1,38 @@
-# Node modules
+# Dependencies
 node_modules/
 
-# Env files
+# Environment files
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+!.env.*.example
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+coverage/
+.vite/
+
+# Local caches
+.cache/
+.eslintcache
+
+# Editor files
+.vscode/
+.idea/
 
 # OS files
 .DS_Store
 Thumbs.db
-
-# Build folders
-dist/
-build/
-
-# Frontend specific
-Frontend/dist/
-
-# Backend specific
-Backend/node_modules/
-
-# IDE files
-.vscode/
-.idea/
+desktop.ini
 
 # Misc
 *.zip
