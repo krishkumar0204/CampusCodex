@@ -2,6 +2,11 @@
 
 CampusCodex is a full-stack student notes platform for browsing, uploading, saving, and searching study notes. The project includes a React + Vite frontend and an Express + MongoDB backend API with authentication, user profile support, and file uploads.
 
+## Live Demo
+
+- [Frontend Live Site](https://campus-codex-two.vercel.app)
+- [Backend API](https://campus-codex-backend.onrender.com)
+
 ## Project Structure
 
 - `Frontend/` contains the React app, pages, reusable components, API helpers, and static assets.
