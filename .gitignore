@@ -1,38 +1,60 @@
+# ======================
 # Dependencies
+# ======================
 node_modules/
+Backend/node_modules/
+Frontend/node_modules/
 
+# ======================
 # Environment files
+# ======================
 .env
 .env.*
 !.env.example
 !.env.*.example
 
+# ======================
 # Logs
+# ======================
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
 
+# ======================
 # Build output
+# ======================
 dist/
 build/
 coverage/
-.vite/
 
-# Local caches
+# Frontend specific
+Frontend/dist/
+Frontend/.vite/
+
+# ======================
+# Cache
+# ======================
 .cache/
 .eslintcache
 
+# ======================
 # Editor files
+# ======================
 .vscode/
 .idea/
 
+# ======================
 # OS files
+# ======================
 .DS_Store
 Thumbs.db
 desktop.ini
 
+# ======================
 # Misc
+# ======================
 *.zip
+*.tar
+*.gz
