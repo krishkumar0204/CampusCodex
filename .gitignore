@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build folders
+dist/
+build/
+
+# Frontend specific
+Frontend/dist/
+
+# Backend specific
+Backend/node_modules/
+
+# IDE files
+.vscode/
+.idea/
+
+# Misc
+*.zip
