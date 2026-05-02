@@ -10,6 +10,7 @@ const Notes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saveIds, setSaveIds] = useState([]);
+  const [isAuth, setIsAuth] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const apiBaseUrl = getApiBaseUrl();
@@ -37,6 +38,31 @@ const Notes = () => {
   }, [apiBaseUrl, debouncedSearch]);
 
   useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get(`${apiBaseUrl}/auth/me`, {
+          withCredentials: true,
+        });
+        setIsAuth(Boolean(res.data.isAuth));
+      } catch (err) {
+        console.error(err);
+        setIsAuth(false);
+        setSaveIds([]);
+      }
+    };
+
+    checkAuth();
+    window.addEventListener("auth-changed", checkAuth);
+
+    return () => window.removeEventListener("auth-changed", checkAuth);
+  }, [apiBaseUrl]);
+
+  useEffect(() => {
+    if (!isAuth) {
+      setSaveIds([]);
+      return;
+    }
+
     const fetchSaved = async () => {
       try {
         const res = await axios.get(`${apiBaseUrl}/user/saved-notes`, {
@@ -47,10 +73,11 @@ const Notes = () => {
         setSaveIds(ids);
       } catch (err) {
         console.error(err);
+        setSaveIds([]);
       }
     };
     fetchSaved();
-  }, [apiBaseUrl]);
+  }, [apiBaseUrl, isAuth]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,6 +88,11 @@ const Notes = () => {
   }, [searchTerm]);
 
   const handleSave = async (id) => {
+    if (!isAuth) {
+      toast.error("Please login to save notes");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${apiBaseUrl}/notes/save/${id}`,
@@ -105,6 +137,7 @@ const Notes = () => {
                   {...note}
                   onSave={handleSave}
                   isSaved={saveIds.includes(note._id)}
+                  showSave={isAuth}
                 />
               ))
             ) : (

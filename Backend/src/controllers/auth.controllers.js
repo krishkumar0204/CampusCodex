@@ -1,12 +1,26 @@
 import httpsStatus from "http-status";
 import { User } from "../models/user.models.js";
 import bcrypt from "bcrypt";
-import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { isAbsolute } from "path";
 
 dotenv.config({ path: "./src/.env" });
+
+const localOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
+
+const getAuthCookieOptions = (req) => {
+  const origin = req.get("origin")?.replace(/\/$/, "");
+  const isLocalRequest =
+    localOrigins.includes(origin) ||
+    ["localhost", "127.0.0.1", "::1"].includes(req.hostname);
+
+  return {
+    httpOnly: true,
+    secure: !isLocalRequest,
+    sameSite: isLocalRequest ? "Lax" : "None",
+    path: "/",
+  };
+};
 
 const register = async (req, res) => {
   const { name, username, password, email } = req.body;
@@ -80,9 +94,7 @@ const login = async (req, res) => {
     });
 
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      ...getAuthCookieOptions(req),
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -94,7 +106,7 @@ const login = async (req, res) => {
   }
 };
 const logout = (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", getAuthCookieOptions(req));
   res.json({ message: "Logged out successfully" });
 };
 

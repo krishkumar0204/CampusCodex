@@ -17,6 +17,7 @@ router.get("/notes/search", searchNotes);
 
 router.post(
   "/notes",
+  authMiddleware,
   upload.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "pdf", maxCount: 1 },

@@ -11,6 +11,10 @@ export const getApiBaseUrl = () => {
     const apiUrl = new URL(configuredUrl, window.location.origin);
     const browserHost = window.location.hostname;
 
+    if (localHosts.includes(browserHost) && !localHosts.includes(apiUrl.hostname)) {
+      return "http://localhost:3000/api";
+    }
+
     if (localHosts.includes(apiUrl.hostname) && !localHosts.includes(browserHost)) {
       apiUrl.hostname = browserHost;
       return apiUrl.toString().replace(/\/$/, "");

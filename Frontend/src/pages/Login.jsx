@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { getApiBaseUrl } from "../utils/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Login = () => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const apiBaseUrl = getApiBaseUrl();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,7 +28,7 @@ const Login = () => {
     try {
       setLoading(true);
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/login`,
+        `${apiBaseUrl}/auth/login`,
         {
           username: formData.username,
           password: formData.password,

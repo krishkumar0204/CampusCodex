@@ -4,11 +4,13 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { LayoutDashboard, LogOut, Menu, X } from "lucide-react";
 import ProfileIcon from "../assets/profile_icon.png";
+import { getApiBaseUrl } from "../utils/api";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [isAuth, setIsAuth] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const apiBaseUrl = getApiBaseUrl();
 
   const linkClass = ({ isActive }) =>
     [
@@ -19,22 +21,27 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false);
 
   const handleLogout = async () => {
-    await axios.post(
-      `${import.meta.env.VITE_API_URL}/auth/logout`,
-      {},
-      { withCredentials: true },
-    );
-    setIsAuth(false);
-    closeMenu();
-    window.dispatchEvent(new Event("auth-changed"));
-    toast.success("Logged out successfully");
-    navigate("/");
+    try {
+      await axios.post(
+        `${apiBaseUrl}/auth/logout`,
+        {},
+        { withCredentials: true },
+      );
+      setIsAuth(false);
+      closeMenu();
+      window.dispatchEvent(new Event("auth-changed"));
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      toast.error("Logout failed");
+    }
   };
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
+        const res = await axios.get(`${apiBaseUrl}/auth/me`, {
           withCredentials: true,
         });
 
@@ -48,7 +55,7 @@ export default function Navbar() {
     window.addEventListener("auth-changed", checkAuth);
 
     return () => window.removeEventListener("auth-changed", checkAuth);
-  }, []);
+  }, [apiBaseUrl]);
 
   return (
     <>

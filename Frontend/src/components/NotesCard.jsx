@@ -8,6 +8,7 @@ const NotesCard = ({
   pdf,
   onSave,
   isSaved,
+  showSave = false,
 }) => {
   return (
     <>
@@ -28,11 +29,13 @@ const NotesCard = ({
               view
             </a>
 
-            <button onClick={() => onSave?.(_id)}>
-              <Bookmark
-                className={isSaved ? "text-yellow-400" : "text-gray-400"}
-              />
-            </button>
+            {showSave && (
+              <button type="button" onClick={() => onSave?.(_id)}>
+                <Bookmark
+                  className={isSaved ? "text-yellow-400" : "text-gray-400"}
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>

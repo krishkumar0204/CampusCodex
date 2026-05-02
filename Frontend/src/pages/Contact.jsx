@@ -6,12 +6,14 @@ import LoadingSpinner from "../components/LoadingSpinner";
 const Contact = () => {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
 
   const handleSubmit = async () => {
     if (!formRef.current) return;
 
     try {
       setLoading(true);
+      setStatus("");
       await emailjs.sendForm(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
@@ -23,6 +25,8 @@ const Contact = () => {
       formRef.current.reset();
     } catch (err) {
       console.error(err);
+      setStatus("error");
+      toast.error("Message failed to send");
     } finally {
       setLoading(false);
     }

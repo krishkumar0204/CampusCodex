@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
+import axios from "axios";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Resources from "./pages/Notes";
@@ -13,6 +15,34 @@ import DashboardHome from "./pages/Dashboard/DashboardHome";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/404";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { getApiBaseUrl } from "./utils/api";
+
+function ProtectedRoute({ children }) {
+  const [isAllowed, setIsAllowed] = useState(null);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get(`${getApiBaseUrl()}/auth/me`, {
+          withCredentials: true,
+        });
+        setIsAllowed(Boolean(res.data.isAuth));
+      } catch (err) {
+        console.error(err);
+        setIsAllowed(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  if (isAllowed === null) {
+    return <LoadingSpinner />;
+  }
+
+  return isAllowed ? children : <Navigate to="/login" replace />;
+}
 
 function App() {
   return (
@@ -28,9 +58,23 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/addnotes" element={<AddNotes />} />
+          <Route
+            path="/addnotes"
+            element={
+              <ProtectedRoute>
+                <AddNotes />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/dashboard" element={<Dashboard />}>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<DashboardHome />} />
             <Route path="saved" element={<SaveNotes />} />
           </Route>

@@ -2,20 +2,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import NotesCard from "../../components/NotesCard";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { getApiBaseUrl } from "../../utils/api";
 
 const SaveNotes = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const apiBaseUrl = getApiBaseUrl();
 
   useEffect(() => {
     const fetchSaved = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/user/saved-notes`,
-          {
-            withCredentials: true,
-          },
-        );
+        const res = await axios.get(`${apiBaseUrl}/user/saved-notes`, {
+          withCredentials: true,
+        });
 
         setNotes(res.data);
       } catch (err) {
@@ -25,7 +24,7 @@ const SaveNotes = () => {
       }
     };
     fetchSaved();
-  }, []);
+  }, [apiBaseUrl]);
 
   if (loading) {
     return <LoadingSpinner />;

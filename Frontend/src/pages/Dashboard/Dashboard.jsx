@@ -4,16 +4,18 @@ import toast from "react-hot-toast";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { getApiBaseUrl } from "../../utils/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const apiBaseUrl = getApiBaseUrl();
 
   const handleLogout = async () => {
     try {
       setLoading(true);
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/logout`,
+        `${apiBaseUrl}/auth/logout`,
         {},
         { withCredentials: true },
       );

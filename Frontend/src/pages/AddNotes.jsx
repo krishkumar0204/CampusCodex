@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Upload } from "lucide-react";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { getApiBaseUrl } from "../utils/api";
 
 const AddNotes = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const AddNotes = () => {
   const [loading, setLoading] = useState(false);
   const thumbnailRef = useRef();
   const pdfRef = useRef();
+  const apiBaseUrl = getApiBaseUrl();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +36,7 @@ const AddNotes = () => {
 
     try {
       setLoading(true);
-      await axios.post(`${import.meta.env.VITE_API_URL}/notes`, data, {
+      await axios.post(`${apiBaseUrl}/notes`, data, {
         withCredentials: true,
       });
       toast.success("Note Added Successfully");
