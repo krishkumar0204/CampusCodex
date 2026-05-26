@@ -8,7 +8,22 @@ import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
 
-dotenv.config({ path: "./src/.env" });
+dotenv.config();
+
+const requiredEnvVars = [
+  "MONGO_URL",
+  "JWT_SECRET",
+  "SUPABASE_URL",
+  "SUPABASE_ANON_KEY",
+  "CLIENT_URL",
+];
+
+const missingEnvVars = requiredEnvVars.filter((key) => !process.env[key]);
+if (missingEnvVars.length > 0) {
+  throw new Error(
+    `Missing required environment variables: ${missingEnvVars.join(", ")}`,
+  );
+}
 
 const app = express();
 const server = createServer(app);
@@ -32,7 +47,9 @@ app.use(
   }),
 );
 
-app.set("port", process.env.PORT);
+const port = process.env.PORT || 3000;
+
+app.set("port", port);
 app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
 app.use(cookieParser());
@@ -59,6 +76,7 @@ const start = async () => {
     });
   } catch (error) {
     console.error("Mongo connection failed:", error.message);
+    process.exit(1);
   }
 };
 

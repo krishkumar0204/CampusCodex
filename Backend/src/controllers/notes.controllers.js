@@ -4,14 +4,14 @@ import { User } from "../models/user.models.js";
 import supabase from "../config/supabase.js";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "./src/.env" });
+dotenv.config();
 
 const addNotes = async (req, res) => {
   try {
     const { title, description } = req.body;
 
-    const thumbnailFile = req.files.thumbnail[0];
-    const pdfFile = req.files.pdf[0];
+    const thumbnailFile = req.files?.thumbnail?.[0];
+    const pdfFile = req.files?.pdf?.[0];
 
     if (!title || !description || !thumbnailFile || !pdfFile) {
       return res.status(400).json({ message: "All Fields Required" });
@@ -131,7 +131,7 @@ const getSavedNotes = async (req, res) => {
     const user = await User.findById(req.user.id).populate("savedNotes");
     res.json(user.savedNotes);
   } catch (err) {
-    res.status(300).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

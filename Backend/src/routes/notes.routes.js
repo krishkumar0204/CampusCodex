@@ -7,8 +7,6 @@ import {
 } from "../controllers/notes.controllers.js";
 import upload from "../middleware/upload.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-import Notes from "../models/notes.models.js";
-import axios from "axios";
 
 const router = Router();
 

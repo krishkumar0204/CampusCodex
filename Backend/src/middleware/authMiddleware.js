@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "./src/.env" });
+dotenv.config();
 
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;

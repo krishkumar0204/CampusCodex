@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "./src/.env" });
+dotenv.config();
 
 const localOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
 
